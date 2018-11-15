@@ -1,0 +1,1 @@
+This project is testing ground for learning Spring and Hibernate frameworks.
