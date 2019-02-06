@@ -1,9 +1,9 @@
-package com.hawwaru;
+package com.hawwaru.config;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
 public class WebAppInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
-    //middle tier services, datasources
+    //middle tier com.hawwaru.services, datasources
     protected Class<?>[] getRootConfigClasses() {
         return null;
     }
