@@ -1,5 +1,6 @@
 package com.hawwaru.controller;
 
+import com.hawwaru.comparators.CastMemberIdComparator;
 import com.hawwaru.services.TmdbClientAuth;
 import com.uwetrottmann.tmdb2.Tmdb;
 import com.uwetrottmann.tmdb2.entities.*;
@@ -18,10 +19,10 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
+import java.util.*;
 import java.util.List;
-import java.util.Locale;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 @Controller
 @PropertySource("classpath:persistence-mysql.properties")
@@ -43,6 +44,7 @@ public class WebController {
 
 
     String baseImgUrl = "https://image.tmdb.org/t/p/w200/";
+    String baseYouTubeUrl = "https://www.youtube.com/embed/";
 
     int i;
 
@@ -67,7 +69,7 @@ public class WebController {
         MoviesService moviesService = tmdb.moviesService();
         try {
             Response<Movie> response = moviesService
-                    .summary(movieid,localeUS.getLanguage(),new AppendToResponse(AppendToResponseItem.CREDITS))
+                    .summary(movieid,localeUS.getLanguage(),new AppendToResponse(AppendToResponseItem.CREDITS,AppendToResponseItem.VIDEOS))
                     .execute();
             if(response.isSuccessful()) {
 
@@ -110,12 +112,25 @@ public class WebController {
                     member.setProfile_path(baseImgUrl+member.profile_path);
                     castMembers.add(member);
                 }
-
+                castMembers.sort(new CastMemberIdComparator());
                 model.addAttribute("castMembers", castMembers);
 
-                logger.info("cast member: " + castMembers.get(1).name);
+                //crew members are sorted by their job for visibility
+                Map<String, List<CrewMember>> crewMembers =
+                        movie.credits.crew.stream().collect(Collectors.groupingBy(c -> c.job));
+                model.addAttribute("crewMemebers", crewMembers);
 
+                //group videos by site and add YouTube url in front of the video key
+                Map<String, List<Videos.Video>> videos =
+                        movie.videos.results.stream().collect(Collectors.groupingBy(
+                                        v -> {
+                                            if(v.site.equals("YouTube")){v.key = baseYouTubeUrl+v.key; }
+                                            return v.site;
+                                        }
+                                        ));
+                model.addAttribute("youtubeVideos", videos);
             }
+
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -284,20 +284,14 @@ dt {
 }
 
 .movieMedia {
-    max-height: 270px;
+    max-height: 320px;
 }
 
-.film-videos .vid-auto:first-child {
-    padding-bottom: 270px;
-    width:432px;
+.film-videos {
+    width:650px;
     float:left;
 }
 
-.film-videos .vid-auto {
-     vertical-align: top;
-     display:inline-block;
-     font-size:14px;
- }
 
 #filmVoteRatingPanel {
     margin: 0 auto 20px;

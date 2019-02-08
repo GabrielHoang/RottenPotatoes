@@ -60,13 +60,17 @@
                 <div class="filmInfo bottom-15">
                     <div class="otherInfo">
                         <dl class="table-list">
-                            <dt>music:</dt>
+                            <dt>director:</dt>
                             <dd>
-                                music composer
+                                <c:forEach items="${crewMemebers.get('Director')}" var="crew">
+                                    ${crew.name}<br/>
+                                </c:forEach>
                             </dd>
-                            <dt>scenario:</dt>
+                            <dt>screenplay:</dt>
                             <dd>
-                                scenario writer
+                                <c:forEach items="${crewMemebers.get('Screenplay')}" var="crew">
+                                    ${crew.name}<br/>
+                                </c:forEach>
                             </dd>
                             <dt>genres:</dt>
                             <dd>
@@ -94,26 +98,27 @@
             <div class="pageBox movieMedia">
                 <h2 class="hdr-big">media</h2>
                 <div class="film-videos">
-                    <img src="https://via.placeholder.com/320x270">
-                    <img src="https://via.placeholder.com/160x135">
+                        <c:forEach items="${youtubeVideos.get('YouTube')}" var="video">
+                            <iframe class="iframe-youtube-vid" src="${video.key}"></iframe>
+                        </c:forEach>
                 </div>
             </div>
-            <div class="pageBox filmCastBox">
+            <div class="pageBox filmCastBox top-5">
                 <h2 class="hdr-big vertical-align">cast</h2>
                 <div class="castGroup">
-                    <!--add for each loop for every actor-->
                     <table>
                         <colgroup>
                             <col width="4%">
                             <col width="48%">
                             <col width="48%">
                         </colgroup>
-                        <c:forEach items="${castMembers}" var="castMember">
+                        <c:set var="actorsDisplayed" value="8"></c:set>
+                        <c:forEach items="${castMembers}" var="castMember" begin="0" end="${actorsDisplayed}">
                         <tr>
                             <td>
                                 <img    class="castImg"
                                         src="${castMember.profile_path}"
-                                onerror="this.src='https://via.placeholder.com/50x65'"/>
+                                        onerror="this.src='https://via.placeholder.com/50x65'"/>
                             </td>
                             <td>
                                 ${castMember.name}
@@ -124,7 +129,7 @@
                         </tr>
                         </c:forEach>
                     </table>
-
+                    <a href="#">Show all actors</a>
                 </div>
             </div>
 
@@ -138,11 +143,15 @@
                         <dl class="table-list">
                             <dt>music:</dt>
                             <dd>
-                                music composer
+                                <c:forEach items="${crewMemebers.get('Original Music Composer')}" var="crew">
+                                    ${crew.name}<br/>
+                                </c:forEach>
                             </dd>
                             <dt>photos:</dt>
                             <dd>
-                                photos creator
+                                <c:forEach items="${crewMemebers.get('Director of Photography')}" var="crew">
+                                    ${crew.name}<br/>
+                                </c:forEach>
                             </dd>
                             <dt>budget:</dt>
                             <dd>
@@ -158,11 +167,6 @@
                                     ${prodComp}<br/>
                                 </c:forEach>
                             </dd>
-                            <dt>other titles:</dt>
-                            <dd>
-                                other title
-                            </dd>
-
                         </dl>
                     </div>
                 </div>
