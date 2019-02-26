@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import retrofit2.Response;
 
+import javax.servlet.jsp.PageContext;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -60,7 +61,7 @@ public class WebController {
 
         //logger.info("KEY: " + env.getProperty("themoviedb.apikey"));
 
-        return "moviepage";
+        return "home";
     }
 
     @GetMapping("/movie/{movieid}")
@@ -129,6 +130,8 @@ public class WebController {
                                         }
                                         ));
                 model.addAttribute("youtubeVideos", videos);
+
+                logger.info(movie.tagline);
             }
 
         } catch (IOException e) {
@@ -136,4 +139,12 @@ public class WebController {
         }
         return "moviepage";
     }
+
+    @GetMapping("search/{keyword}")
+    public String searchKeyword (@PathVariable String keyword) {
+
+
+        return "search";
+    }
+
 }

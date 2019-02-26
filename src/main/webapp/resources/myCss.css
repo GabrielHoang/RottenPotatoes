@@ -306,6 +306,7 @@ dt {
 .filmTitle {
     font-size:32px;
 }
+
 /* Tablet size*/
 @media screen and (max-width:768px) {
     .topnav,
